@@ -1,0 +1,26 @@
+{
+  "name": "bluhwerk",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack -p 5626",
+    "build": "next build --webpack",
+    "start": "next start -p 5626",
+    "db:push": "prisma db push",
+    "db:seed": "node prisma/seed.mjs",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcryptjs": "^3.0.3",
+    "gsap": "^3.13.0",
+    "jose": "^6.2.3",
+    "lenis": "^1.1.13",
+    "next": "^16.2.9",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.3"
+  }
+}

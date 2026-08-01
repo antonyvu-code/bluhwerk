@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blühwerk — Study Case</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#F4EFE6;
+    --paper-2:#EFE8DB;
+    --ink:#1F241E;
+    --soil:#3A2E23;
+    --sage:#8A9A7B;
+    --line:#DBD2C2;
+    /* Accent = mùa hiện tại (Sommer / tháng 7) */
+    --accent:#E4B23C;
+    --accent-spring:#E8A0B4;
+    --accent-summer:#E4B23C;
+    --accent-autumn:#C9552F;
+    --accent-winter:#6E8B9E;
+    --maxw:min(1120px,92vw);
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Inter",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:inherit}
+  ::selection{background:var(--accent);color:var(--ink)}
+
+  /* Skip link (a11y) */
+  .skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);
+    padding:.6rem 1rem;z-index:99;border-radius:0 0 6px 0}
+  .skip:focus{left:0}
+  :focus-visible{outline:2px solid var(--soil);outline-offset:3px;border-radius:2px}
+
+  /* Topbar */
+  .topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;
+    align-items:center;padding:1rem clamp(1rem,4vw,3rem);
+    background:color-mix(in srgb,var(--paper) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .brand{font-family:var(--serif);font-weight:600;font-size:1.15rem;letter-spacing:.01em}
+  .brand span{color:var(--accent)}
+  .topbar .meta{font-family:var(--mono);font-size:.72rem;color:var(--soil);
+    text-transform:uppercase;letter-spacing:.12em}
+
+  main{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1rem,4vw,0)}
+
+  /* Hero */
+  .hero{padding:clamp(4rem,12vh,9rem) 0 clamp(3rem,7vh,5rem)}
+  .eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--sage);margin-bottom:1.4rem}
+  .hero h1{font-family:var(--serif);font-weight:500;line-height:1.02;
+    font-size:clamp(2.6rem,8vw,6rem);letter-spacing:-.02em}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero .lede{max-width:46ch;margin-top:1.8rem;font-size:clamp(1.05rem,2.2vw,1.35rem);
+    color:var(--soil)}
+  .tagline{font-family:var(--serif);font-style:italic;font-size:1.15rem;
+    color:var(--sage);margin-top:1.2rem}
+
+  /* Facts strip */
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px;background:var(--line);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;margin-top:3rem}
+  .facts div{background:var(--paper);padding:1.1rem 1.2rem}
+  .facts dt{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--sage);margin-bottom:.35rem}
+  .facts dd{font-family:var(--serif);font-size:1.05rem}
+
+  /* Sections */
+  section.chapter{padding:clamp(3rem,8vh,6rem) 0;border-top:1px solid var(--line)}
+  .num{font-family:var(--mono);font-size:.8rem;color:var(--accent);
+    letter-spacing:.1em;margin-bottom:.9rem;display:block}
+  .chapter h2{font-family:var(--serif);font-weight:500;
+    font-size:clamp(1.8rem,4.5vw,3rem);line-height:1.08;letter-spacing:-.01em;
+    max-width:20ch;margin-bottom:1.6rem}
+  .chapter p{max-width:64ch;margin-bottom:1.1rem;color:var(--soil)}
+  .chapter p strong{color:var(--ink);font-weight:500}
+  .chapter em{font-style:italic}
+
+  .pull{font-family:var(--serif);font-size:clamp(1.3rem,3vw,1.9rem);
+    line-height:1.3;color:var(--ink);max-width:24ch;
+    border-left:3px solid var(--accent);padding-left:1.4rem;margin:2rem 0}
+
+  /* Color swatches */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:.8rem;margin:1.8rem 0}
+  .sw{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .sw .chip{height:64px}
+  .sw .lab{padding:.55rem .7rem;font-family:var(--mono);font-size:.7rem;color:var(--soil)}
+  .sw .lab b{display:block;color:var(--ink);font-size:.75rem;margin-bottom:.1rem}
+  .seasons{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+  .season{display:flex;align-items:center;gap:.5rem;font-family:var(--mono);
+    font-size:.75rem;padding:.4rem .8rem;border:1px solid var(--line);border-radius:99px}
+  .dot{width:14px;height:14px;border-radius:50%}
+
+  /* Table */
+  .tbl{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.92rem}
+  .tbl th,.tbl td{text-align:left;padding:.7rem .8rem;border-bottom:1px solid var(--line);
+    vertical-align:top}
+  .tbl th{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--sage)}
+  .tbl td:first-child{font-family:var(--mono);color:var(--accent);white-space:nowrap}
+  .tbl td strong{color:var(--ink);font-weight:500}
+
+  /* Sitemap tree */
+  .tree{font-family:var(--mono);font-size:.82rem;line-height:1.9;color:var(--soil);
+    background:var(--paper-2);border:1px solid var(--line);border-radius:12px;
+    padding:1.4rem 1.6rem;overflow-x:auto;white-space:pre;margin:1.4rem 0}
+  .tree b{color:var(--ink);font-weight:500}
+  .tree .hi{color:var(--accent)}
+
+  ul.clean{list-style:none;margin:1rem 0}
+  ul.clean li{position:relative;padding-left:1.4rem;margin-bottom:.7rem;
+    max-width:64ch;color:var(--soil)}
+  ul.clean li::before{content:"→";position:absolute;left:0;color:var(--accent)}
+
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(22px);
+    transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  footer{border-top:1px solid var(--line);margin-top:3rem;
+    padding:3rem clamp(1rem,4vw,3rem);text-align:center}
+  footer .brand{font-size:2rem;margin-bottom:.6rem}
+  footer p{font-family:var(--mono);font-size:.72rem;color:var(--sage);
+    letter-spacing:.1em;text-transform:uppercase}
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Zum Inhalt springen</a>
+
+<header class="topbar">
+  <div class="brand">Blüh<span>werk</span></div>
+  <div class="meta">Study Case · Sommer · KW&nbsp;29</div>
+</header>
+
+<main id="content">
+
+  <section class="hero">
+    <p class="eyebrow reveal">Konzept-Studie — E-Commerce für Pflanzen &amp; Blumen</p>
+    <h1 class="reveal">Wir verkaufen<br>keine Produkte.<br>Wir verkaufen<br><em>etwas Lebendiges.</em></h1>
+    <p class="lede reveal">Blühwerk ist keine Blumen-Website. Es ist eine <strong>Gärtnerei</strong> —
+      geführt von Menschen, die Pflanzen lieben, bevor sie sie verkaufen. Diese Studie
+      erklärt <em>warum</em> jede Design-Entscheidung so getroffen wurde.</p>
+    <p class="tagline reveal">„Etwas Lebendiges nach Hause bringen.“</p>
+
+    <dl class="facts reveal">
+      <div><dt>Typ</dt><dd>E-Commerce</dd></div>
+      <div><dt>Markt</dt><dd>Berlin / DACH</dd></div>
+      <div><dt>Stack</dt><dd>Next.js · GSAP</dd></div>
+      <div><dt>Prinzip</dt><dd>Season-aware</dd></div>
+      <div><dt>Dialekt</dt><dd>Gärtnerei</dd></div>
+    </dl>
+  </section>
+
+  <!-- 01 -->
+  <section class="chapter">
+    <span class="num reveal">01 — Prämisse</span>
+    <h2 class="reveal">Das Problem: Blumen online kaufen fühlt sich kalt an</h2>
+    <p class="reveal">Die meisten Blumen- und Pflanzenshops verkaufen eine <strong>Transaktion</strong>:
+      ein Raster aus Produkten, ein Preis, ein Kaufen-Button. Effizient — aber seelenlos.
+      Man fühlt nichts. Man erinnert sich an nichts.</p>
+    <p class="reveal">Doch niemand kauft eine Pflanze aus rein rationalen Gründen. Man kauft sie,
+      weil man <em>etwas Lebendiges</em> ins Zuhause holen will — ein Stück Ruhe, ein
+      Ritual, ein Wesen, um das man sich kümmert. Blühwerk baut die gesamte Erfahrung
+      um dieses Gefühl herum, nicht um den Warenkorb.</p>
+    <blockquote class="pull reveal">Andere verkaufen Transaktionen. Blühwerk verkauft eine Beziehung.</blockquote>
+    <p class="reveal">Drei Prinzipien tragen alles Weitere: <strong>① Pflanzen sind Lebewesen,
+      keine SKUs. ② Die Jahreszeit bestimmt das Gefühl. ③ Pflege ist Liebe.</strong>
+      Jedes Kapitel dieser Studie leitet sich aus einem dieser drei Sätze ab.</p>
+  </section>
+
+  <!-- 02 -->
+  <section class="chapter">
+    <span class="num reveal">02 — Positionierung</span>
+    <h2 class="reveal">Eine Gärtnerei, kein Shop</h2>
+    <p class="reveal">Das Wort entscheidet über den Ton. Wir nennen uns nie „Shop“, sondern
+      <strong>Gärtnerei</strong> (Vườn ươm) — der Ort, an dem Pflanzen aufgezogen werden.
+      Wer verkauft, ist zuerst jemand, der Pflanzen liebt.</p>
+    <p class="reveal">Praktisch heißt das: Der Bereich <em>Pflege</em> (Chăm sóc) steht
+      gleichberechtigt neben dem Shop. Wir verkaufen dir keine Pflanze und verschwinden —
+      wir begleiten sie. Ein „Pflanzendoktor“ diagnostiziert gelbe Blätter, ein
+      „Pflanzen-Tagebuch“ im Konto erinnert ans Gießen. Das schafft Bindung, die ein
+      reiner Shop nie erreicht.</p>
+    <p class="reveal">Der Name <strong>Blühwerk</strong> (blühen + Werk = „eine Werkstatt des
+      Blühens“) knüpft bewusst an deutsches Handwerks-Vokabular an — dieselbe DNA wie
+      das WERKBUND-Projekt. Für den Berliner/DACH-Markt liest sich das premium und
+      geerdet zugleich.</p>
+  </section>
+
+  <!-- 03 -->
+  <section class="chapter">
+    <span class="num reveal">03 — Die Jahreszeit ist echt</span>
+    <h2 class="reveal">Die Website weiß, welche Jahreszeit gerade ist</h2>
+    <p class="reveal">Das ist der emotionale Kern — und eine Idee, die direkt aus dem
+      BLOOM-Projekt stammt („count-is-real“): Wenn ein Wert <em>echt</em> ist, fühlt sich
+      die Seite lebendig an. Bei Blühwerk ist dieser Wert die <strong>Jahreszeit</strong>.</p>
+    <p class="reveal">Hero-Bild, Akzentfarbe, Grundwärme des Hintergrunds und die empfohlenen
+      Pflanzen verschieben sich mit der echten Saison. Beim Scrollen durch das Jahr
+      wechselt der Akzent sanft (Tween) von Farbe zu Farbe — man <em>fühlt</em>, wie
+      man durch ein Jahr geht.</p>
+
+    <div class="swatches reveal">
+      <div class="sw"><div class="chip" style="background:#F4EFE6"></div>
+        <div class="lab"><b>Paper</b>#F4EFE6</div></div>
+      <div class="sw"><div class="chip" style="background:#1F241E"></div>
+        <div class="lab"><b>Ink</b>#1F241E</div></div>
+      <div class="sw"><div class="chip" style="background:#3A2E23"></div>
+        <div class="lab"><b>Soil</b>#3A2E23</div></div>
+      <div class="sw"><div class="chip" style="background:#8A9A7B"></div>
+        <div class="lab"><b>Sage</b>#8A9A7B</div></div>
+    </div>
+
+    <p class="reveal">Der Akzent ist keine feste Marke, sondern ein Kalender:</p>
+    <div class="seasons reveal">
+      <span class="season"><span class="dot" style="background:#E8A0B4"></span>Frühling · Peach-Rosa</span>
+      <span class="season"><span class="dot" style="background:#E4B23C"></span>Sommer · Sonnengelb</span>
+      <span class="season"><span class="dot" style="background:#C9552F"></span>Herbst · Terracotta</span>
+      <span class="season"><span class="dot" style="background:#6E8B9E"></span>Winter · Nebelblau</span>
+    </div>
+    <p class="reveal" style="margin-top:1.4rem">Der Hintergrund bleibt bewusst <strong>warmes
+      Papier statt klinisch weiß</strong> — so treten botanische Bilder hervor wie
+      gepresst in ein Herbarium. Kontraste werden real gegen WCAG AA geprüft; der Akzent
+      trägt nie kleinen Fließtext.</p>
+  </section>
+
+  <!-- 04 -->
+  <section class="chapter">
+    <span class="num reveal">04 — Struktur</span>
+    <h2 class="reveal">Sitemap: wo Liebe zur Pflanze wohnt</h2>
+    <p class="reveal">Die Navigation macht das Versprechen sichtbar. Neben dem Shop bekommen
+      <span style="color:var(--accent)">Pflege</span>, <em>Nach Raum</em> (Kaufen nach
+      Zimmer) und ein persönliches <em>Pflanzen-Tagebuch</em> eigene, gleichwertige Orte.</p>
+    <div class="tree reveal"><b>Blühwerk</b>
+├─ /                     <span class="hi">Startseite</span> — season-aware
+├─ /shop                 Alle Produkte + Filter
+│   ├─ /pflanzen · /blumen · /toepfe · /geschenke
+│   └─ /:kategorie/:slug  Produktdetail (PDP)
+├─ /kollektionen         Kuratiert — „Erste Pflanze“, „Dunkle Ecken“
+├─ /nach-raum            <span class="hi">Kaufen nach Zimmer</span>
+├─ /pflege               <span class="hi">Pflege-Hub — der Herzschlag</span>
+│   ├─ /:pflanze          Care-Guide je Art
+│   └─ /pflanzendoktor    Diagnose: gelbe Blätter, Schädlinge
+├─ /journal              Editorial — Geschichten, Menschen, Saison
+├─ /abo                  Blumen-Abo (wöchentlich / monatlich)
+├─ /ueber-uns            Die Gärtnerei + Team
+├─ Konto
+│   ├─ /anmelden · /registrieren
+│   ├─ /konto             Dashboard
+│   ├─ /meine-pflanzen    <span class="hi">Tagebuch + Gieß-Erinnerung</span>
+│   └─ /wunschliste
+├─ Checkout
+│   ├─ /warenkorb
+│   └─ /kasse             Versand → Zahlung → Bestätigung
+└─ Legal   /versand · /agb · /datenschutz · /impressum · 404</div>
+    <p class="reveal">Die markierten Zeilen gibt es bei kaum einem Wettbewerber — sie
+      verwandeln einen Kauf in eine fortlaufende Beziehung.</p>
+  </section>
+
+  <!-- 05 -->
+  <section class="chapter">
+    <span class="num reveal">05 — Visual &amp; Motion</span>
+    <h2 class="reveal">Bewegung mit Bedeutung, nicht Dekoration</h2>
+    <p class="reveal">Du wolltest „viele Animationen und Scroll-Effekte“. Damit das nicht
+      chaotisch wird, bekommt jeder Effekt einen <strong>Grund</strong>. Acht Bausteine,
+      alle mit GSAP + ScrollTrigger + Lenis, alle mit <code>prefers-reduced-motion</code>-Fallback.</p>
+    <table class="tbl reveal">
+      <thead><tr><th>ID</th><th>Effekt</th><th>Warum</th></tr></thead>
+      <tbody>
+        <tr><td>M1</td><td><strong>Bloom-on-scroll</strong> — eine Blüte öffnet sich beim Scrollen (Image-Sequence-Scrub)</td><td>Der Signatur-Moment. Wachstum als echtes Gefühl, geerbt vom BLOOM-Growth-Tween.</td></tr>
+        <tr><td>M2</td><td><strong>Seasonal tint shift</strong></td><td>Akzent &amp; Wärme tweenen zwischen Jahreszeiten — „durch ein Jahr gehen“.</td></tr>
+        <tr><td>M3</td><td><strong>Parallax</strong> (3 Ebenen)</td><td>Tiefe wie in einem echten Beet: Blätter vorn langsam, Pflanzen hinten schneller.</td></tr>
+        <tr><td>M4</td><td><strong>Reveal-Stagger</strong> + Clip-Path</td><td>Produkte/Journal erscheinen ruhig gestaffelt — wie ein sich öffnender Vorhang.</td></tr>
+        <tr><td>M5</td><td><strong>Horizontal pinned Gallery</strong></td><td>Saison-Kollektion seitlich durchscrollen — ein Spaziergang, kein Raster.</td></tr>
+        <tr><td>M6</td><td><strong>Sticky Product-Media</strong></td><td>Auf der PDP wechselt das Bild pro „Kapitel“ (Licht → Wasser → Herkunft).</td></tr>
+        <tr><td>M7</td><td><strong>Magnetic hover / grow</strong></td><td>Karten wachsen leicht (1.03) — die Pflanze streckt sich zum Licht.</td></tr>
+        <tr><td>M8</td><td><strong>Living micro-motion</strong></td><td>Blätter wiegen sich minimal. Aus bei reduced-motion.</td></tr>
+      </tbody>
+    </table>
+    <p class="reveal"><strong>Typografie:</strong> Display-Serif <em>Fraunces</em> (wie ein
+      altes Botanik-Journal), sauberes <em>Inter</em> für Text, <em>Mono</em> für Meta —
+      der wissenschaftliche Name kursiv neben dem Trivialnamen. Sofort riecht die Seite
+      nach jemandem, der Pflanzen wirklich kennt.</p>
+  </section>
+
+  <!-- 06 -->
+  <section class="chapter">
+    <span class="num reveal">06 — Zugänglichkeit &amp; Bilder</span>
+    <h2 class="reveal">Bildschwer, aber schnell und für alle</h2>
+    <p class="reveal">Eine bildschwere Seite ist nur premium, wenn sie <strong>zusammenhält
+      und schnell lädt</strong>. Alle Fotos folgen einer gemeinsamen „Photography Bible“:
+      warmes Papierlicht von links, gedämpfte Grün-Ocker-Palette, feines Filmkorn, keine
+      Übersättigung. 33 Bilder wirken so, als hätte sie <em>ein</em> Fotograf gemacht.</p>
+    <ul class="clean reveal">
+      <li>Vier Bild-Register, nie gemischt: <strong>Studio-Makro · Lifestyle · Detail/Textur · Hand/Mensch</strong>. Das „Hand“-Register erzeugt die Liebe — echte Menschen, die pflegen.</li>
+      <li>Performance: AVIF/WebP, <code>next/image</code> mit responsive <code>sizes</code>, Blur-Placeholder, Hero-Preload, Sequence-Frames lazy.</li>
+      <li>A11y: Skip-Link, sichtbarer Fokus, echter WCAG-AA-Kontrast, Alt-Texte, vollständige Tastatur-Bedienung, reduzierte Bewegung respektiert.</li>
+      <li>Responsive &amp; Mobile-First: schwere Parallax/Pin-Effekte fallen auf Mobil weg, der Bloom-Moment bleibt.</li>
+    </ul>
+  </section>
+
+  <!-- 07 -->
+  <section class="chapter">
+    <span class="num reveal">07 — Ausblick</span>
+    <h2 class="reveal">Was als Nächstes wächst</h2>
+    <ul class="clean reveal">
+      <li><strong>Build der Startseite</strong> (Next.js + GSAP) mit den Effekten M1–M8 und Platzhalter-Bildern.</li>
+      <li><strong>Bild-Produktion</strong> nach den 33 Prompts der Konzept-Studie, durch einen gemeinsamen LUT vereinheitlicht.</li>
+      <li><strong>„Nach deiner Ecke“</strong> — ein kleiner Empfehlungs-Flow (wenig Licht? vergisst du zu gießen?), der Emotion in Personalisierung übersetzt.</li>
+      <li><strong>Headless Commerce</strong> (Shopify Storefront / Medusa) anbinden, sobald das Erlebnis steht.</li>
+    </ul>
+    <blockquote class="pull reveal">Ein guter Blumenladen verkauft dir eine Pflanze.
+      Ein großartiger bringt dich dazu, sie zu lieben.</blockquote>
+  </section>
+
+</main>
+
+<footer>
+  <div class="brand">Blüh<span style="color:var(--accent)">werk</span></div>
+  <p>Konzept-Studie · Sommer 2026 · Pflanzen mit Charakter</p>
+</footer>
+
+<script>
+  const els=document.querySelectorAll('.reveal');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce||!('IntersectionObserver'in window)){
+    els.forEach(e=>e.classList.add('in'));
+  }else{
+    const io=new IntersectionObserver((ents)=>{
+      ents.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+    },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+    els.forEach(e=>io.observe(e));
+  }
+</script>
+</body>
+</html>

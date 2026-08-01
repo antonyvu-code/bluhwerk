@@ -1,0 +1,4 @@
+node_modules/\n.next/\ndev.db\n.env
+
+.vercel
+.env*

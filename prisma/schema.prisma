@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  reviews      Review[]
+  orders       Order[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  category    String
+  name        String
+  sci         String
+  price       Int
+  care        String
+  light       Int
+  water       Int
+  difficulty  Int
+  height      String
+  origin      String
+  img         String
+  imgDetail   String
+  imgRoom     String
+  personality String
+  steckbrief  String
+  reviews     Review[]
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  name      String
+  city      String
+  plant     String
+  rating    Int
+  text      String
+  createdAt DateTime @default(now())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  items     String
+  total     Int
+  status    String   @default("bestätigt")
+  createdAt DateTime @default(now())
+}
