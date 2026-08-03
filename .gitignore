@@ -2,3 +2,7 @@ node_modules/\n.next/\ndev.db\n.env
 
 .vercel
 .env*
+node_modules/
+.next/
+dist/
+.claude-flow/
